@@ -21,10 +21,10 @@ public class PokedleService {
     public GuessResult processGuess(Pokemon guess, Pokemon target) {
         boolean isWinner = guess.getId().equals(target.getId());
 
-        // 1. Calculate Letter Hints (The "Wordle" part)
+        //Calculate Letter Hints (The "Wordle" part)
         List<LetterStatus> nameHints = calculateLetterHints(guess.getName(), target.getName());
 
-        // 2. Calculate Attribute Hints (The "Pokemon" part)
+        //Calculate Attribute Hints (The "Pokemon" part)
         List<GuessFeedback> attributeHints = new ArrayList<>();
 
         attributeHints.add(compareStrings("Type 1", guess.getTypeOne(), target.getTypeOne()));
@@ -39,8 +39,6 @@ public class PokedleService {
 
     private List<LetterStatus> calculateLetterHints(String guess, String target) {
         List<LetterStatus> statuses = new ArrayList<>();
-        // Note: Simple logic assuming equal length for classic Wordle.
-        // For Pokemon of diff lengths, you might just compare char-by-char up to the shortest length.
         int len = Math.min(guess.length(), target.length());
 
         for (int i = 0; i < len; i++) {
@@ -57,7 +55,7 @@ public class PokedleService {
     }
 
     private GuessFeedback compareStrings(String label, String g, String t) {
-        // Handle nulls for Type 2
+        //Handle nulls for Type 2
         String val = (g == null) ? "None" : g;
         String targetVal = (t == null) ? "None" : t;
 
@@ -84,17 +82,17 @@ public class PokedleService {
     }
 
     public Pokemon getDailyPokemon() {
-        // Fetch only the IDs to keep the memory footprint low
+        //Fetch only the IDs to keep the memory footprint low
         List<Long> allIds = pokemonRepository.findAllIds();
 
         if (allIds.isEmpty()) {
             throw new RuntimeException("Pokedex is empty! Did you run the seeder?");
         }
 
-        // Use the date as a seed
+        //Use the date as a seed
         long dayIndex = LocalDate.now().toEpochDay();
 
-        // Use modulo to wrap around the list of available IDs
+        //Use modulo to wrap around the list of available IDs
         int targetIndex = (int) (dayIndex % allIds.size());
         Long targetId = allIds.get(targetIndex);
 

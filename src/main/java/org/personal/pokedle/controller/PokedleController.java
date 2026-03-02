@@ -43,13 +43,13 @@ public class PokedleController {
      */
     @PostMapping("/guess")
     public ResponseEntity<GuessResult> submitGuess(@RequestBody GuessRequest request) {
-        // 1. Get the fixed target for the day
+        //Get the fixed target for the day
         Pokemon target = pokedleService.getDailyPokemon();
 
-        // 2. Validate that the guessed Pokemon exists in our SQL DB
+        //Validate that the guessed Pokemon exists in our SQL DB
         return pokemonRepository.findByNameIgnoreCase(request.pokemonName())
                 .map(guessedPkmn -> {
-                    // 3. Process the logic via our unified service
+                    //Process the logic via our unified service
                     GuessResult result = pokedleService.processGuess(guessedPkmn, target);
                     return ResponseEntity.ok(result);
                 })

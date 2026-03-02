@@ -10,7 +10,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient.Builder webClientBuilder() {
-        // Increase the buffer limit to 2MB
+        //Increase the buffer limit to 2MB
         ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(configurer -> configurer
                         .defaultCodecs()

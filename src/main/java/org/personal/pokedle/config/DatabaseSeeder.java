@@ -18,7 +18,7 @@ public class DatabaseSeeder {
         return args -> {
             System.out.println("Checking Pokedex status in MySQL...");
 
-            // 1. Get the list of all Names/URLs
+            //Get the list of all Names/URLs
             List<Map<String, String>> allPokemon = client.fetchAllPokemonMetadata();
             int newEntries = 0;
 
@@ -27,22 +27,22 @@ public class DatabaseSeeder {
                     String[] urlParts = baseData.get("url").split("/");
                     Long id = Long.parseLong(urlParts[urlParts.length - 1]);
 
-                    // Stop at the end of the National Dex (Gen 9)
+                    //Count for natdex number
                     if (id > 151) break;
 
-                    // RESUMPTION LOGIC: Only fetch if we don't have this ID yet
+                    //only fetch if we don't have this ID yet
                     if (!repository.existsById(id)) {
 
-                        // 2. Fetch Detailed Data (Requires 2 API calls per Pokemon)
+                        //Fetch Detailed Data (Requires 2 API calls per Pokemon)
                         Map<String, Object> details = client.fetchPokemonDetails(id);
                         Map<String, Object> species = client.fetchSpeciesDetails(id);
 
-                        // 3. Extract Types
+                        //Extract Types
                         List<Map<String, Object>> types = (List<Map<String, Object>>) details.get("types");
                         String t1 = (String) ((Map<String, Object>) types.get(0).get("type")).get("name");
                         String t2 = types.size() > 1 ? (String) ((Map<String, Object>) types.get(1).get("type")).get("name") : null;
 
-                        // 4. Build the Entity
+                        //Build the Entity
                         Pokemon p = Pokemon.builder()
                                 .id(id)
                                 .name(baseData.get("name").toUpperCase())
@@ -60,7 +60,7 @@ public class DatabaseSeeder {
                         repository.save(p);
                         newEntries++;
 
-                        // RATE LIMITING: Pause for 100ms to avoid 'Connection Reset'
+                        //Pause for 300ms to avoid 'Connection Reset'
                         Thread.sleep(300);
 
                         if (id % 10 == 0) {
