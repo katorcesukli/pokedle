@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Data
@@ -84,7 +85,7 @@ public class PokedleService {
     }
 
     public Pokemon getDailyPokemon() {
-        //Fetch only the IDs to keep the memory footprint low
+        //fetch id
         List<Long> allIds = pokemonRepository.findAllIds();
 
         if (allIds.isEmpty()) {
@@ -94,8 +95,14 @@ public class PokedleService {
         //Use the date as a seed
         long dayIndex = LocalDate.now().toEpochDay();
 
+        //more randomness
+        Random random = new Random(dayIndex);
+
         //Use modulo to wrap around the list of available IDs
-        int targetIndex = (int) (dayIndex % allIds.size());
+        //int targetIndex = (int) (dayIndex % allIds.size());
+
+        //now using random
+        int targetIndex = random.nextInt(allIds.size());
         Long targetId = allIds.get(targetIndex);
 
         return pokemonRepository.findById(targetId)

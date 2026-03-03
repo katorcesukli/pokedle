@@ -27,7 +27,7 @@ public class DatabaseSeeder {
                     String[] urlParts = baseData.get("url").split("/");
                     Long id = Long.parseLong(urlParts[urlParts.length - 1]);
 
-                    //Count for natdex number
+                    //Count for natdex number RIGHT HERE BRO
                     if (id > 151) break;
 
                     //only fetch if we don't have this ID yet

@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080/api/v1/game";
+const API_BASE = "http://192.168.11.34:8080/api/v1/game";
 
 // 1. On Load: Get Hint
 window.onload = async () => {
