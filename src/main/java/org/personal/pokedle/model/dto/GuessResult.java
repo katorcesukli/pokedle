@@ -6,5 +6,6 @@ import java.util.List;
 public record GuessResult(
         String guess,
         List<LetterStatus> fingerPrint, // e.g., [CORRECT, ABSENT, PRESENT...]
-        List<GuessFeedback> attributeHints, boolean isWinner
+        List<GuessFeedback> attributeHints,
+        boolean isWinner
 ) {}

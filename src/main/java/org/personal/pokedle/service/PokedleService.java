@@ -54,30 +54,32 @@ public class PokedleService {
         return statuses;
     }
 
+    //comparisons 1,
     private GuessFeedback compareStrings(String label, String g, String t) {
-        //Handle nulls for Type 2
+        //Handle nulls for Type 2, mono type pokemon check
         String val = (g == null) ? "None" : g;
-        String targetVal = (t == null) ? "None" : t;
+        String tamaba = (t == null) ? "None" : t;
 
         return GuessFeedback.builder()
                 .attributeName(label)
                 .value(val)
-                .status(val.equalsIgnoreCase(targetVal) ? "CORRECT" : "WRONG")
+                .status(val.equalsIgnoreCase(tamaba) ? "CORRECT" : "WRONG")
                 .direction("EQUAL")
                 .build();
     }
 
+    //comparisons 2, need in service
     private GuessFeedback compareNumbers(String label, Double g, Double t) {
-        String direction;
-        if (g < t) direction = "HIGHER";
-        else if (g > t) direction = "LOWER";
-        else direction = "EQUAL";
+        String tamakaba;
+        if (g < t) tamakaba = "HIGHER";
+        else if (g > t) tamakaba = "LOWER";
+        else tamakaba = "EQUAL";
 
         return GuessFeedback.builder()
                 .attributeName(label)
                 .value(g.toString())
                 .status(g.equals(t) ? "CORRECT" : "WRONG")
-                .direction(direction)
+                .direction(tamakaba)
                 .build();
     }
 
@@ -86,7 +88,7 @@ public class PokedleService {
         List<Long> allIds = pokemonRepository.findAllIds();
 
         if (allIds.isEmpty()) {
-            throw new RuntimeException("Pokedex is empty! Did you run the seeder?");
+            throw new RuntimeException("Pokedex is empty!");
         }
 
         //Use the date as a seed

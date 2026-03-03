@@ -9,8 +9,14 @@ import java.util.Map;
 public class PokeApiClient {
     private final WebClient webClient;
 
+
     public PokeApiClient(WebClient.Builder builder) {
-        this.webClient = builder.baseUrl("https://pokeapi.co/api/v2/").build();
+        this.webClient = builder.baseUrl("https://pokeapi.co/api/v2/")
+                .exchangeStrategies(org.springframework.web.reactive.function.client.ExchangeStrategies.builder()
+                        .codecs(configurer -> configurer
+                                .defaultCodecs()
+                                .maxInMemorySize(16 * 1024 * 1024)) // 16MB
+                        .build()).build();
     }
 
     public List<Map<String, String>> fetchAllPokemonMetadata() {
@@ -37,4 +43,6 @@ public class PokeApiClient {
                 .bodyToMono(Map.class)
                 .block();
     }
+
+
 }
